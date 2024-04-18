@@ -5,6 +5,8 @@ from newton_method_const import newton_with_constant_learning_rate
 from newton_method_search import newton_with_search_learning_rate
 from newton_wolfe import newton_with_wolfe_search
 from plotting import plot_graphs
+import pandas as pd
+
 
 # Функция Розенброка
 def rosenbrock(x):
@@ -41,13 +43,19 @@ def hessian_non_polynomial_function(x):
     return np.array([[d2f_dx2, d2f_dx_dy], [d2f_dx_dy, d2f_dy2]])
 
 
+df = pd.DataFrame(
+    columns=['Method', 'Function', 'Learning Rate', 'Initial Point', 'Optimal Point', 'Function Value', 'Iterations',
+             'Execution Time'])
+
 # Начальная точка
 # NOTE 1: x = [1, 1] - это точка минимума функции Розенброка, должно быть 0 итераций
 # NOTE 2: при x0 = [0, 0] для неполиномиальной функции метод не сходится
 x0 = [0, 0]
 
 # Применяем метод оптимизации Ньютона с постоянным шагом к функции Розенброка
-min_x, iters, taken_time, all_pointsRosC = newton_with_constant_learning_rate(rosenbrock, grad_rosenbrock, hessian_rosenbrock, x0)
+min_x, iters, taken_time, all_pointsRosC = newton_with_constant_learning_rate(rosenbrock, grad_rosenbrock,
+                                                                              hessian_rosenbrock, x0)
+df.loc[len(df)] = ['Newton with constant learning rate', 'Rosenbrock', 'Constant', x0, min_x, rosenbrock(min_x), iters, taken_time]
 
 # Выводим результат
 print("Минимальная точка:", min_x)
@@ -57,8 +65,10 @@ print("Время выполнения:", taken_time)
 print()
 
 x0 = [0.5, 0.5]
-min_x, iters, taken_time, all_pointsNonPC = newton_with_constant_learning_rate(non_polynomial_function, grad_non_polynomial_function,
-                                                              hessian_non_polynomial_function, x0)
+min_x, iters, taken_time, all_pointsNonPC = newton_with_constant_learning_rate(non_polynomial_function,
+                                                                               grad_non_polynomial_function,
+                                                                               hessian_non_polynomial_function, x0)
+df.loc[len(df)] = ['Newton with constant learning rate', 'Non-polynomial', 'Constant', x0, min_x, non_polynomial_function(min_x), iters, taken_time]
 
 # Выводим результат
 print("Минимальная точка:", min_x)
@@ -68,7 +78,9 @@ print("Время выполнения:", taken_time)
 print()
 
 x0 = [0, 0]
-min_x, iters, taken_time, all_pointsRosS = newton_with_search_learning_rate(rosenbrock, grad_rosenbrock, hessian_rosenbrock, x0)
+min_x, iters, taken_time, all_pointsRosS = newton_with_search_learning_rate(rosenbrock, grad_rosenbrock,
+                                                                            hessian_rosenbrock, x0)
+df.loc[len(df)] = ['Newton with search learning rate', 'Rosenbrock', 'Search', x0, min_x, rosenbrock(min_x), iters, taken_time]
 
 # Выводим результат
 print("Минимальная точка:", min_x)
@@ -78,8 +90,10 @@ print("Время выполнения:", taken_time)
 print()
 
 x0 = [0.5, 0.5]
-min_x, iters, taken_time, all_pointsNonPS = newton_with_search_learning_rate(non_polynomial_function, grad_non_polynomial_function,
-                                                            hessian_non_polynomial_function, x0)
+min_x, iters, taken_time, all_pointsNonPS = newton_with_search_learning_rate(non_polynomial_function,
+                                                                             grad_non_polynomial_function,
+                                                                             hessian_non_polynomial_function, x0)
+df.loc[len(df)] = ['Newton with search learning rate', 'Non-polynomial', 'Search', x0, min_x, non_polynomial_function(min_x), iters, taken_time]
 
 # Выводим результат
 print("Минимальная точка:", min_x)
@@ -98,10 +112,11 @@ plot_graphs(rosenbrock, a, b)
 a, b = np.hsplit(all_pointsNonPS, 2)
 plot_graphs(non_polynomial_function, a, b)
 
-
 x0 = [0, 0]
 
 min_x, iters, taken_time, _ = newton_cg(rosenbrock, grad_rosenbrock, x0)
+
+df.loc[len(df)] = ['Newton-CG', 'Rosenbrock', 'Search', x0, min_x, rosenbrock(min_x), iters, taken_time]
 
 print("Минимальная точка:", min_x)
 print("Значение функции Розенброка в минимальной точке:", rosenbrock(min_x))
@@ -113,6 +128,8 @@ x0 = [0.5, 0.5]
 
 min_x, iters, taken_time, _ = quasinewton(non_polynomial_function, grad_non_polynomial_function, x0)
 
+df.loc[len(df)] = ['Quasi-Newton', 'Non-polynomial', 'Search', x0, min_x, non_polynomial_function(min_x), iters, taken_time]
+
 print("Минимальная точка:", min_x)
 print("Значение неполиномиальной функции в минимальной точке:", non_polynomial_function(min_x))
 print("Количество итераций:", iters)
@@ -121,7 +138,15 @@ print()
 
 min_x, iters, taken_time, all_points = newton_with_wolfe_search(rosenbrock, grad_rosenbrock, hessian_rosenbrock, x0)
 
+df.loc[len(df)] = ['Newton with Wolfe search', 'Rosenbrock', 'Wolfe', x0, min_x, rosenbrock(min_x), iters, taken_time]
+
 print("Минимальная точка:", min_x)
 print("Значение функции Розенброка в минимальной точке:", rosenbrock(min_x))
 print("Количество итераций:", iters)
 print("Время выполнения:", taken_time)
+
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+pd.set_option('display.width', None)
+pd.set_option('display.max_colwidth', None)
+print(df)

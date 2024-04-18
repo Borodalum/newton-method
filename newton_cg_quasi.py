@@ -13,9 +13,9 @@ def quasinewton(f, grad_f, x0):
 
 def newton_cg_method(f, grad_f, x0):
     result = minimize(f, x0, method='Newton-CG', jac=grad_f)
-    return result.x, result.nit
+    return result.x, result.nit, None
 
 
 def bfgs_method(f, grad_f, x0):
     result = minimize(f, x0, method='BFGS', jac=grad_f)
-    return result.x, result.nit
+    return result.x, result.nit, None

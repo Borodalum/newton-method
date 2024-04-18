@@ -1,5 +1,6 @@
 import numpy as np
-import time
+
+from calc_time_hyperparam import calc_time
 
 
 def newton_with_constant_learning_rate(f, grad_f, hessian_f, x0, learning_rate=0.1, epsilon=1e-8, max_iter=1000):
@@ -17,10 +18,3 @@ def minimize(f, grad_f, hessian_f, x0, learning_rate, epsilon, max_iter):
         x = x + delta_x
         iter_count += 1
     return x, iter_count
-
-
-def calc_time(func, arguments):
-    start = time.time()
-    x, iterations = func(*arguments)
-    end = time.time() - start
-    return x, iterations, end

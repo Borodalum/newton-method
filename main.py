@@ -3,8 +3,8 @@ import numpy as np
 from newton_cg_quasi import newton_cg, quasinewton
 from newton_method_const import newton_with_constant_learning_rate
 from newton_method_search import newton_with_search_learning_rate
-from plotting import plot_2d, plot_3d
 from newton_wolfe import newton_with_wolfe_search
+from plotting import plot_graphs
 
 # Функция Розенброка
 def rosenbrock(x):
@@ -47,9 +47,7 @@ def hessian_non_polynomial_function(x):
 x0 = [0, 0]
 
 # Применяем метод оптимизации Ньютона с постоянным шагом к функции Розенброка
-# TODO: use all_points to plot the convergence
-min_x, iters, taken_time, all_points = newton_with_constant_learning_rate(rosenbrock, grad_rosenbrock,
-                                                                          hessian_rosenbrock, x0)
+min_x, iters, taken_time, all_pointsRosC = newton_with_constant_learning_rate(rosenbrock, grad_rosenbrock, hessian_rosenbrock, x0)
 
 # Выводим результат
 print("Минимальная точка:", min_x)
@@ -59,10 +57,8 @@ print("Время выполнения:", taken_time)
 print()
 
 x0 = [0.5, 0.5]
-# TODO: use all_points to plot the convergence
-min_x, iters, taken_time, all_points = newton_with_constant_learning_rate(non_polynomial_function,
-                                                                          grad_non_polynomial_function,
-                                                                          hessian_non_polynomial_function, x0)
+min_x, iters, taken_time, all_pointsNonPC = newton_with_constant_learning_rate(non_polynomial_function, grad_non_polynomial_function,
+                                                              hessian_non_polynomial_function, x0)
 
 # Выводим результат
 print("Минимальная точка:", min_x)
@@ -72,9 +68,7 @@ print("Время выполнения:", taken_time)
 print()
 
 x0 = [0, 0]
-# TODO: use all_points to plot the convergence
-min_x, iters, taken_time, all_points = newton_with_search_learning_rate(rosenbrock, grad_rosenbrock, hessian_rosenbrock,
-                                                                        x0)
+min_x, iters, taken_time, all_pointsRosS = newton_with_search_learning_rate(rosenbrock, grad_rosenbrock, hessian_rosenbrock, x0)
 
 # Выводим результат
 print("Минимальная точка:", min_x)
@@ -84,10 +78,8 @@ print("Время выполнения:", taken_time)
 print()
 
 x0 = [0.5, 0.5]
-# TODO: use all_points to plot the convergence
-min_x, iters, taken_time, all_points = newton_with_search_learning_rate(non_polynomial_function,
-                                                                        grad_non_polynomial_function,
-                                                                        hessian_non_polynomial_function, x0)
+min_x, iters, taken_time, all_pointsNonPS = newton_with_search_learning_rate(non_polynomial_function, grad_non_polynomial_function,
+                                                            hessian_non_polynomial_function, x0)
 
 # Выводим результат
 print("Минимальная точка:", min_x)
@@ -97,10 +89,16 @@ print("Время выполнения:", taken_time)
 print()
 
 # Графики
-plot_3d(rosenbrock, [-2, 2], [-1, 3], title="Rosenbrock function")
-plot_2d(rosenbrock, [-2, 2], [-1, 3], title="Rosenbrock function")
-plot_3d(non_polynomial_function, [-2, 2], [-2, 2], title="Non-polynomial function")
-plot_2d(non_polynomial_function, [-2, 2], [-2, 2], title="Non-polynomial function")
+a, b = np.hsplit(all_pointsRosC, 2)
+plot_graphs(rosenbrock, a, b)
+a, b = np.hsplit(all_pointsNonPC, 2)
+plot_graphs(non_polynomial_function, a, b)
+a, b = np.hsplit(all_pointsRosS, 2)
+plot_graphs(rosenbrock, a, b)
+a, b = np.hsplit(all_pointsNonPS, 2)
+plot_graphs(non_polynomial_function, a, b)
+
+
 x0 = [0, 0]
 
 min_x, iters, taken_time, _ = newton_cg(rosenbrock, grad_rosenbrock, x0)

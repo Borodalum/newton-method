@@ -9,6 +9,7 @@ def newton_with_constant_learning_rate(f, grad_f, hessian_f, x0, learning_rate=0
 
 def minimize(f, grad_f, hessian_f, x0, learning_rate, epsilon, max_iter):
     x = np.array(x0)
+    all_points = [x]
     iter_count = 0
     while iter_count < max_iter:
         grad = grad_f(x)
@@ -16,5 +17,6 @@ def minimize(f, grad_f, hessian_f, x0, learning_rate, epsilon, max_iter):
             break
         delta_x = -np.linalg.inv(hessian_f(x)).dot(grad) * learning_rate
         x = x + delta_x
+        all_points.append(x)
         iter_count += 1
-    return x, iter_count
+    return x, iter_count, all_points

@@ -46,7 +46,8 @@ def hessian_non_polynomial_function(x):
 x0 = [0, 0]
 
 # Применяем метод оптимизации Ньютона с постоянным шагом к функции Розенброка
-min_x, iters, taken_time = newton_with_constant_learning_rate(rosenbrock, grad_rosenbrock, hessian_rosenbrock, x0)
+# TODO: use all_points to plot the convergence
+min_x, iters, taken_time, all_points = newton_with_constant_learning_rate(rosenbrock, grad_rosenbrock, hessian_rosenbrock, x0)
 
 # Выводим результат
 print("Минимальная точка:", min_x)
@@ -56,8 +57,8 @@ print("Время выполнения:", taken_time)
 print()
 
 x0 = [0.5, 0.5]
-
-min_x, iters, taken_time = newton_with_constant_learning_rate(non_polynomial_function, grad_non_polynomial_function,
+# TODO: use all_points to plot the convergence
+min_x, iters, taken_time, all_points = newton_with_constant_learning_rate(non_polynomial_function, grad_non_polynomial_function,
                                                               hessian_non_polynomial_function, x0)
 
 # Выводим результат
@@ -68,7 +69,8 @@ print("Время выполнения:", taken_time)
 print()
 
 x0 = [0, 0]
-min_x, iters, taken_time = newton_with_search_learning_rate(rosenbrock, grad_rosenbrock, hessian_rosenbrock, x0)
+# TODO: use all_points to plot the convergence
+min_x, iters, taken_time, all_points = newton_with_search_learning_rate(rosenbrock, grad_rosenbrock, hessian_rosenbrock, x0)
 
 # Выводим результат
 print("Минимальная точка:", min_x)
@@ -78,7 +80,8 @@ print("Время выполнения:", taken_time)
 print()
 
 x0 = [0.5, 0.5]
-min_x, iters, taken_time = newton_with_search_learning_rate(non_polynomial_function, grad_non_polynomial_function,
+# TODO: use all_points to plot the convergence
+min_x, iters, taken_time, all_points = newton_with_search_learning_rate(non_polynomial_function, grad_non_polynomial_function,
                                                             hessian_non_polynomial_function, x0)
 
 # Выводим результат
@@ -90,7 +93,7 @@ print()
 
 x0 = [0, 0]
 
-min_x, iters, taken_time = newton_cg(rosenbrock, grad_rosenbrock, x0)
+min_x, iters, taken_time, _ = newton_cg(rosenbrock, grad_rosenbrock, x0)
 
 print("Минимальная точка:", min_x)
 print("Значение функции Розенброка в минимальной точке:", rosenbrock(min_x))
@@ -100,7 +103,7 @@ print()
 
 x0 = [0.5, 0.5]
 
-min_x, iters, taken_time = quasinewton(non_polynomial_function, grad_non_polynomial_function, x0)
+min_x, iters, taken_time, _ = quasinewton(non_polynomial_function, grad_non_polynomial_function, x0)
 
 print("Минимальная точка:", min_x)
 print("Значение неполиномиальной функции в минимальной точке:", non_polynomial_function(min_x))

@@ -3,6 +3,7 @@ from scipy.optimize import minimize
 
 from newton_method_const import newton_with_constant_learning_rate
 from newton_method_search import newton_with_search_learning_rate
+from plotting import plot_2d, plot_3d
 
 
 # Функция Розенброка
@@ -87,3 +88,9 @@ print("Значение неполиномиальной функции в ми�
 print("Количество итераций:", iters)
 print("Время выполнения:", taken_time)
 print()
+
+# Графики
+plot_3d(rosenbrock, [-2, 2], [-1, 3], title="Rosenbrock function")
+plot_2d(rosenbrock, [-2, 2], [-1, 3], title="Rosenbrock function")
+plot_3d(non_polynomial_function, [-2, 2], [-2, 2], title="Non-polynomial function")
+plot_2d(non_polynomial_function, [-2, 2], [-2, 2], title="Non-polynomial function")
